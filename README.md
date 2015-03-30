@@ -27,3 +27,4 @@ make
 
 So you code, compile, code, compile etc, running make in the RCCPP-build folder.
 
+# LifeGame
