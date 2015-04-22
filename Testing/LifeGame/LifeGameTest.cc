@@ -18,7 +18,7 @@
 
 #include <LifeGame.hpp>
 #include <GeneralException.hpp>
-#include <IncorrectInitialEstimateException.hpp>
+#include <IncorrectInitialStateException.hpp>
 #include <IncorrectSizesException.hpp>
 #include <NoFileFoundException.hpp>
 
@@ -55,7 +55,7 @@ TEST_CASE( "Input file bad formatting", "[Input File]" ) {
 			o << 1 << 2 << 1 << endl;
 			o << 1 << 1 << 1 << endl;
 
-       		REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_ie), IncorrectInitialEstimateException );
+       		REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_ie), IncorrectInitialStateException );
     }
 
 }
