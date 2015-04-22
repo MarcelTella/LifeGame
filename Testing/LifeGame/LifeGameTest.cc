@@ -24,7 +24,7 @@
 
 using namespace std;
 
-TEST_CASE( "Input file bad formatting", "[Input File]" ) {
+TEST_CASE( "Input file bad formatting", "[IO]" ) {
 
     string input_path = "../../../Data/data.lg";
 
@@ -40,7 +40,7 @@ TEST_CASE( "Input file bad formatting", "[Input File]" ) {
     	o << 1 << 1 << 1 << endl;
 		o << 1 << 1 << 1 << endl;
     	o << 1 << 1 << 1 << endl;
-
+    	o.close();
     	REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_sizes_path), IncorrectSizesException);
     }
 
@@ -54,7 +54,7 @@ TEST_CASE( "Input file bad formatting", "[Input File]" ) {
 			o << 1 << ' ' <<  1 << ' ' << 1 << endl;
 			o << 1 << ' ' <<  2 << ' ' << 1 << endl;
 			o << 1 << ' ' <<  1 << ' ' << 1 << endl;
-
+			o.close();
        		REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_ie), IncorrectInitialStateException );
     }
 
@@ -68,7 +68,7 @@ TEST_CASE( "Input file bad formatting", "[Input File]" ) {
 			o << 1 << ' ' <<  1 << ' ' << 1 << endl;
 			o << 1 << ' ' <<  1 << ' ' << 1 << endl;
 			o << 1 << ' ' <<  1 << ' ' << 1 << endl;
-
+			o.close();
 			REQUIRE_NOTHROW(LifeGame<bool> lg(correct_path) );
 	}
 
@@ -83,10 +83,139 @@ TEST_CASE( "Input file bad formatting", "[Input File]" ) {
 
 			REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_ie) , IncorrectInitialStateException );
 	}
+}
+
+TEST_CASE( "Checking the count of neighbours", "[Life Game]" ) {
+
+	string correct_path = "/tmp/correct_x.lg";
+	ofstream o;
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	LifeGame<bool> lg(correct_path);
+
+	REQUIRE( lg.countNeighbours(1,1,alive) == 8);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	//REQUIRE( lg.countNeighbours(1,1,alive) == 7);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,alive) == 6);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,alive) == 5);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,alive) == 4);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,alive) == 3);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,alive) == 2);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,alive) == 1);
+}
+
+TEST_CASE( "Test for the state of the cells", "[Life Game]" ) {
+
+	string correct_path = "/tmp/correct_x.lg";
+	ofstream o;
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 1 << ' ' <<  0 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	LifeGame<bool> lg(correct_path);
+	REQUIRE( lg.stateOf(0,0) == true);
+	REQUIRE( lg.stateOf(1,2) == true);
+	REQUIRE( lg.stateOf(-1,0) == false);
+	REQUIRE( lg.stateOf(0,-2) == false);
+	REQUIRE( lg.stateOf(1,-1) == true);
 
 }
 
 
+TEST_CASE( "Core conditions, getting a new state from a board and a position", "[Life Game]" ) {
 
+	string correct_path = "/tmp/correct_x.lg";
+	ofstream o;
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 1 << ' ' <<  0 << ' ' << 0 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 1 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	LifeGame<bool> lg(correct_path);
+	REQUIRE( lg.getNewState(0,0) == true);
+	REQUIRE( lg.getNewState(0,1) == false);
+	REQUIRE( lg.getNewState(0,2) == false);
+	REQUIRE( lg.getNewState(1,0) == true);
+	REQUIRE( lg.getNewState(1,1) == true);
+	REQUIRE( lg.getNewState(1,2) == false);
+	REQUIRE( lg.getNewState(2,0) == true);
+	REQUIRE( lg.getNewState(2,1) == false);
+	REQUIRE( lg.getNewState(2,2) == false);
 
+}
 
+TEST_CASE( "Output file already exist", "[IO]" ) {
+	string path = "/tmp/alreadyexists.lg";
+	ofstream o;
+	o.open (path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 1 << ' ' <<  0 << ' ' << 0 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 1 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	LifeGame<bool> lg(path);
+
+	REQUIRE_THROWS(lg.writeInFile(path));
+}

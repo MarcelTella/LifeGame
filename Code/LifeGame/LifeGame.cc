@@ -51,6 +51,7 @@ void LifeGame<T>::loadFile(string path)
 	board.resize(NumRows, NumCols);
 
 	int rows = 0;
+	bool read;
 	for(int ii=0; ii<NumRows ; ii++){
 			
 		getline(file, line);
@@ -63,8 +64,8 @@ void LifeGame<T>::loadFile(string path)
 		int columns = 0;
 		for(int i=0; i<NumCols ; i++){
 
-			if (iss.rdbuf()->in_avail() ) throw IncorrectInitialStateException("Wrong Initial State - Not enough data");
-			iss >> temp;
+			read = (iss >> temp);
+			if (!read) throw IncorrectInitialStateException("Wrong Initial State - Not enough data");
 
 			iTemp = atoi(temp.c_str());
 			if (iTemp != 1 && iTemp != 0) throw IncorrectInitialStateException("Wrong Initial State - Value not allowed");
@@ -82,6 +83,10 @@ void LifeGame<T>::loadFile(string path)
 template<typename T>
 void LifeGame<T>::writeInFile(string output_path)
 {
+	  FILE *fp = fopen(output_path.c_str(),"r");
+	  if(fp != NULL) throw GeneralException("Output file already exists");
+	  fclose(fp);
+
 	  ofstream myfile;
 	  myfile.open(output_path.c_str(), std::ios_base::app);
 	  myfile << board << endl << endl;
