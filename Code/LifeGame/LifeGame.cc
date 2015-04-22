@@ -31,48 +31,51 @@ void LifeGame<T>::loadFile(string path)
 	ifstream file(path.c_str());
 
 	//Making sure that I can read.
-	if(!file.is_open()) throw NoFileFoundException();
+	if(!file.is_open()) throw NoFileFoundException("No File Found");
 
 	string line;
 	//Read the cols
 	getline(file, line);
 
 	//Assign the cols
-	try{
-		NumRows = atoi(line.c_str());
-	}
-	catch(IncorrectSizesException &e){
-		cerr << e.what() << endl;
-	}
+	NumRows = atoi(line.c_str());
 
-	//Read the rows
-	throw IncorrectSizesException();
-	
-	if (line.size() == 0) throw IncorrectSizesException();
+
+	if (line.size() == 0) throw IncorrectSizesException("Incorrect Sizes");
 	getline(file, line);
 
 	//Assign the rows
-	//if (line.size() == 0) throw IncorrectSizesException();
 	NumCols = atoi(line.c_str());
 
 	//Create the matrix
 	board.resize(NumRows, NumCols);
 
+	int rows = 0;
 	for(int ii=0; ii<NumRows ; ii++){
 			
 		getline(file, line);
-		if (line.size() == 0) throw IncorrectInitialStateException("Initial Estimate Wrong");
+		if (line.size() == 0) throw IncorrectInitialStateException("Wrong Initial State - No data");
 
 		//filling the object
 		istringstream iss(line);
-		T temp;
+		string temp;
+		int iTemp;
+		int columns = 0;
 		for(int i=0; i<NumCols ; i++){
-			iss >> temp;
-			if (temp != 1 && temp != 0) throw IncorrectInitialStateException();
-			board(ii, i) = (temp == 1);
-		}
 
+			if (iss.rdbuf()->in_avail() ) throw IncorrectInitialStateException("Wrong Initial State - Not enough data");
+			iss >> temp;
+
+			iTemp = atoi(temp.c_str());
+			if (iTemp != 1 && iTemp != 0) throw IncorrectInitialStateException("Wrong Initial State - Value not allowed");
+			board(ii, i) = (iTemp == 1);
+			columns++;
+		}
+		if (columns != NumCols)throw IncorrectInitialStateException("Wrong Initial State - Error in the number of cols.");
+		rows++;
 	}
+	if (rows != NumRows)throw IncorrectInitialStateException("Wrong Initial State - Error in the number of rows");
+
 
 }
 

@@ -9,7 +9,7 @@ class IncorrectSizesException : GeneralException
 	private:
 		std::string err_msg;
 	public:
-		IncorrectSizesException(const char *msg);
+		IncorrectSizesException(const char *msg) : err_msg(msg) {};
 		IncorrectSizesException() {};
 		~IncorrectSizesException() throw() {};
 		const char *what() const throw() { return this->err_msg.c_str(); };

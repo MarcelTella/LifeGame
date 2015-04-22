@@ -10,7 +10,7 @@ class NoFileFoundException : public GeneralException
 		std::string err_msg;
 	public:
 
-		NoFileFoundException(const char *msg);
+		NoFileFoundException(const char *msg) : err_msg(msg) {};
 		NoFileFoundException();
 		~NoFileFoundException() throw() {}
 		const char *what() const throw() { return this->err_msg.c_str(); }
