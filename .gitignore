@@ -4,3 +4,7 @@ Code/LifeGame/.project
 Code/LifeGame/.settings
 research-computing-with-cpp-demo-build/
 **/*~
+.cproject
+.project
+.settings..
+Debug/
