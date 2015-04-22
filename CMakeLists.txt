@@ -191,10 +191,16 @@ endforeach()
 include_directories(Code/LifeGame)
 include_directories(Testing/catch)
 include_directories(Testing/LifeGame)
+include_directories(Code/LifeGame/Include)
  
 ######################################################################
 # Decide what subdirectories we are building, and go and build them.
 ######################################################################
 add_subdirectory(Code)
 add_subdirectory(Testing)
+
+######################################################################
+# My Own directives
+######################################################################
+link_directories(Code/LifeGame/Include)
 

@@ -18,7 +18,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
 #include <itkImage.h>
-#include "LifeGame.hpp"
+#include <LifeGame.hpp>
 
 using namespace std;
 

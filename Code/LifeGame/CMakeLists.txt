@@ -14,9 +14,7 @@
 
 add_executable(main main.cpp)
 
-set( PROJ_SOURCES
-   "main.cpp"
-   "LifeGame.cpp"
-   )
-
 target_link_libraries(main ${ITK_LIBRARIES} ${Boost_LIBRARIES})
+
+
+#add_subdirectory(Include)
