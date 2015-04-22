@@ -27,20 +27,37 @@ using namespace std;
 TEST_CASE( "Input file bad formatting", "[Input File]" ) {
 
     string input_path = "../../../Data/data.lg";
-
+/*
     SECTION("Checking that a wrong file gives me error"){
-        	REQUIRE_THROWS_AS(LifeGame<bool> lg("../../"), NoFileFoundException );
+        REQUIRE_THROWS_AS(LifeGame<bool> lg("../../"), NoFileFoundException );
      }
 
     SECTION("Checking that the sizes are correct"){
-    	string incorrect_sizes_path = "../../../Data/dataIncorrectSizes.lg";
-    	REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_sizes_path), IncorrectSizesException );
+    	string incorrect_sizes_path = "/tmp/incorrect_path.lg";
+    	ofstream o;
+	    o.open (incorrect_sizes_path.c_str());
+    	o << endl << endl;
+    	o << 1 << 1 << 1 << endl;
+		o << 1 << 1 << 1 << endl;
+    	o << 1 << 1 << 1 << endl;
+
+    	REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_sizes_path), IncorrectSizesException);
     }
+*/
 
     SECTION("Incorrect initial estimate"){
-       		string incorrect_ie_path = "../../../Data/dataIncorrectInitialEstimate.lg";
-           	REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_ie_path), IncorrectInitialEstimateException );
+
+    		string incorrect_ie = "/tmp/incorrect_ie.lg";
+			ofstream o;
+			o.open (incorrect_ie.c_str());
+			o << 3 << endl << 3 << endl;
+			o << 1 << 1 << 1 << endl;
+			o << 1 << 2 << 1 << endl;
+			o << 1 << 1 << 1 << endl;
+
+       		REQUIRE_THROWS_AS(LifeGame<bool> lg(incorrect_ie), IncorrectInitialEstimateException );
     }
+
 }
 
 

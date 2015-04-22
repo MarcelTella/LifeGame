@@ -29,5 +29,5 @@ class LifeGame
 	friend ostream& operator<< (ostream& os, const LifeGame<T1>& lg);
 };
 
-#include "../LifeGame.imp"
+#include "../LifeGame.cc"
 #endif

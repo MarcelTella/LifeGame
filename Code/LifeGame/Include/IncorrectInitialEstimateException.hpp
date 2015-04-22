@@ -9,6 +9,7 @@ class IncorrectInitialEstimateException : public GeneralException
 	private:
 		std::string err_msg;
 	public:
+		IncorrectInitialEstimateException(const char *msg);
 		IncorrectInitialEstimateException() {};
 		~IncorrectInitialEstimateException() throw() {};
 		const char *what() const throw() { return this->err_msg.c_str(); };
