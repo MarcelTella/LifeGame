@@ -203,4 +203,6 @@ add_subdirectory(Testing)
 # My Own directives
 ######################################################################
 link_directories(Code/LifeGame/Include)
+set ( CMAKE_C_FLAGS "fopenmp")
+set (CMAKE_EXE_LINKER_FLAGS "fopenmp" )
 

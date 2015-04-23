@@ -5,6 +5,7 @@
 #include <IncorrectInitialStateException.hpp>
 #include <IncorrectSizesException.hpp>
 #include <NoFileFoundException.hpp>
+#include <omp.h>
 
 
 using namespace std;
@@ -84,11 +85,6 @@ void LifeGame<T>::loadFile(string path)
 template<typename T>
 void LifeGame<T>::writeInFile(string output_path)
 {
-	/*
-	  FILE *fp = fopen(output_path.c_str(),"r");
-	  if(fp != NULL) throw GeneralException("Output file already exists");
-	  fclose(fp);
-	 */
 	  ofstream myfile;
 	  myfile.open(output_path.c_str(), std::ios_base::app);
 	  myfile << board << endl << endl;
@@ -100,9 +96,14 @@ void LifeGame<T>::updateBoard()
 {
 	Eigen::Matrix <T,Eigen::Dynamic,Eigen::Dynamic> tmpTable(NumRows, NumCols);
 
-	for(int i=0; i<tmpTable.rows(); i++){
-		for (int j=0; j<tmpTable.cols(); j++){
-			tmpTable(i,j) = getNewState(i, j);
+	//#pragma omp parallel for share(tmpTable), num_threads(4)
+	{
+		for(int i=0; i<tmpTable.rows(); i++){
+			//cout << "The number of threads is " << omp_get_num_threads << endl;
+			for (int j=0; j<tmpTable.cols(); j++){
+
+				tmpTable(i,j) = getNewState(i, j);
+			}
 		}
 	}
 
@@ -173,14 +174,14 @@ bool LifeGame<T>::stateOf(int i, int j) const
 {
 	int newI, newJ;
 	if(i<0){
-		newI = NumRows+i;
+		newI = NumRows-(abs(i)%NumRows);
 	}
 	else{
 		newI = i%NumRows;
 	}
 
 	if(j<0){
-		newJ = NumCols+j;
+		newJ = NumCols-(abs(j)%NumCols);
 	}
 	else{
 		newJ = j%NumCols;

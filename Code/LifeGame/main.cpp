@@ -19,6 +19,9 @@
 #include <boost/program_options.hpp>
 #include <itkImage.h>
 #include <LifeGame.hpp>
+#include <sys/stat.h>
+#include <time.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -68,6 +71,12 @@ int program_options (int argc, char** argv, string &path1, string &output_path, 
 
 int main(int argc, char** argv)
 {
+	//Timing
+	clock_t t;
+	int f;
+	t = clock();
+	printf ("Calculating...\n");
+
 	//Get points
 	string input_path;
 	string output_path;
@@ -77,6 +86,11 @@ int main(int argc, char** argv)
 		return 1;
 
 	if(iter < 0) throw GeneralException("Negative number of iterations");
+
+	//Checking the path is correct and it does not exist.
+	struct stat buffer;
+    if (stat (output_path.c_str(), &buffer) == 0) throw GeneralException("Output file already exists");
+
 	//Initialise lg;
 	LifeGame<bool> lg(input_path);
 
@@ -86,6 +100,9 @@ int main(int argc, char** argv)
 		lg.updateBoard();
 		lg.writeInFile(output_path);
 	}
+
+	t = clock() - t;
+	printf ("It took me %d clicks (%f seconds).\n",(int)t,((float)t)/CLOCKS_PER_SEC);
 
   return EXIT_SUCCESS;
 }
