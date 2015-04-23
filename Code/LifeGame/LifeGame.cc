@@ -10,8 +10,7 @@
 
 using namespace std;
 
-template<typename T>
-LifeGame<T>::LifeGame()
+LifeGame::LifeGame()
 {
 	int defaultValue = 10;
 	NumRows = defaultValue;
@@ -19,14 +18,12 @@ LifeGame<T>::LifeGame()
 	board.resize(NumRows, NumCols);
 }
 
-template<typename T>
-LifeGame<T>::LifeGame(string input_path)
+LifeGame::LifeGame(string input_path)
 {
 	loadFile(input_path);
 }
 
-template<typename T>
-void LifeGame<T>::loadFile(string path)
+void LifeGame::loadFile(string path)
 {
 	//Open the file
 	ifstream file(path.c_str());
@@ -82,8 +79,8 @@ void LifeGame<T>::loadFile(string path)
 
 }
 
-template<typename T>
-void LifeGame<T>::writeInFile(string output_path)
+
+void LifeGame::writeInFile(string output_path)
 {
 	  ofstream myfile;
 	  myfile.open(output_path.c_str(), std::ios_base::app);
@@ -91,10 +88,10 @@ void LifeGame<T>::writeInFile(string output_path)
 	  myfile.close();
 }
 
-template<typename T>
-void LifeGame<T>::updateBoard()
+
+void LifeGame::updateBoard()
 {
-	Eigen::Matrix <T,Eigen::Dynamic,Eigen::Dynamic> tmpTable(NumRows, NumCols);
+	Eigen::Matrix <bool,Eigen::Dynamic,Eigen::Dynamic> tmpTable(NumRows, NumCols);
 
 	//#pragma omp parallel for share(tmpTable), num_threads(4)
 	{
@@ -110,8 +107,8 @@ void LifeGame<T>::updateBoard()
 	board = tmpTable;
 }
 
-template<typename T>
-int LifeGame<T>::countNeighbours(int i, int j, state st) const
+
+int LifeGame::countNeighbours(int i, int j, state st) const
 {
 	int count = 0;
 	//8 cases
@@ -150,8 +147,8 @@ int LifeGame<T>::countNeighbours(int i, int j, state st) const
 	return count;
 }
 
-template<typename T>
-bool LifeGame<T>::getNewState(int i, int j) const
+
+bool LifeGame::getNewState(int i, int j) const
 {
 
 	int dNeigh = countNeighbours(i, j, dead);
@@ -169,8 +166,8 @@ bool LifeGame<T>::getNewState(int i, int j) const
 	return dead;
 }
 
-template<typename T>
-bool LifeGame<T>::stateOf(int i, int j) const
+
+bool LifeGame::stateOf(int i, int j) const
 {
 	int newI, newJ;
 	if(i<0){
@@ -190,8 +187,8 @@ bool LifeGame<T>::stateOf(int i, int j) const
 	return board(newI,newJ);
 }
 
-template<typename T>
-ostream& operator<<(ostream& os, const LifeGame<T>& lg)
+
+ostream& operator<<(ostream& os, const LifeGame& lg)
 {
 	cout << lg.board << endl;
     return os;

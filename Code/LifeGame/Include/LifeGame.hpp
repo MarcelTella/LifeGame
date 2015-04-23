@@ -8,7 +8,7 @@ using namespace std;
 
 enum state{dead, alive};
 
-template<typename T>
+
 class LifeGame
 {
 	Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic> board;
@@ -16,8 +16,8 @@ class LifeGame
 	int NumCols;
 
 	public:
-	LifeGame<T>();
-	LifeGame<T>(string input_path);
+	LifeGame();
+	LifeGame(string input_path);
 	void loadFile(string input_path);
 	void updateBoard();
 	bool getNewState(int i, int j) const;
@@ -25,8 +25,7 @@ class LifeGame
 	bool stateOf(int i,int j) const;
 	void writeInFile(string output_path);
 
-	template<typename T1>
-	friend ostream& operator<< (ostream& os, const LifeGame<T1>& lg);
+	friend ostream& operator<< (ostream& os, const LifeGame& lg);
 };
 
 #include "../LifeGame.cc"

@@ -17,7 +17,6 @@
 #include <Eigen/Dense>
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
-#include <itkImage.h>
 #include <LifeGame.hpp>
 #include <sys/stat.h>
 #include <time.h>
@@ -92,7 +91,7 @@ int main(int argc, char** argv)
     if (stat (output_path.c_str(), &buffer) == 0) throw GeneralException("Output file already exists");
 
 	//Initialise lg;
-	LifeGame<bool> lg(input_path);
+	LifeGame lg(input_path);
 
 	//while(true){
 	lg.writeInFile(output_path);
