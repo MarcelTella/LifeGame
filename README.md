@@ -1,10 +1,9 @@
-# Project details
+# Game of Life - Project details
 This project is the second coursework of the subject Research Computing with C++
 
 # Author
 Marcel Tella Amo
-research-computing-with-cpp-demo
-================================
+
 
 Build Instructions
 ==================
