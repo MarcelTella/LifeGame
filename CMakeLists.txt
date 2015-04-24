@@ -58,8 +58,8 @@ if (NOT ${CMAKE_VERSION} VERSION_LESS "3.1")
   cmake_policy(SET CMP0053 OLD)
 endif ()
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall  -fopenmp -O3")
-
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall  -fopenmp -O3")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
 ######################################################################
 # We have a super-build option to download Eigen, Boost, ITK.
 ######################################################################
@@ -105,7 +105,7 @@ set(CMAKE_MODULE_PATH
    )
 
 
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -fopenmp -O3")
+
 ######################################################################
 # Add in any functions/macros.
 ######################################################################

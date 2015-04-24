@@ -76,6 +76,10 @@ int main(int argc, char** argv)
 		int f;
 		t = clock();
 
+		double startTime;
+		double endTime;
+		startTime = omp_get_wtime();
+
 		//Get points
 		string input_path;
 		string output_path;
@@ -105,6 +109,9 @@ int main(int argc, char** argv)
 		//Timing
 		t = clock() - t;
 		printf ("It took me %d clicks (%f seconds).\n",(int)t,((float)t)/CLOCKS_PER_SEC);
+
+		endTime = omp_get_wtime();
+		printf("This task took %f seconds\n", endTime - startTime);
 
     } catch(exception &e){
     	cerr << "The program has failed due to the following exception:" << endl;

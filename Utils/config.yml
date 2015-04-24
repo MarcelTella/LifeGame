@@ -1,0 +1,4 @@
+path: ../research-computing-with-cpp-demo-build/RCCPP-build/bin/
+input_file: ../../../Data/init100.txt
+output_file: output1.txt
+iter: 50

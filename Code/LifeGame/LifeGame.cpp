@@ -89,35 +89,11 @@ void LifeGame::updateBoard()
 {
 	Eigen::Matrix <bool,Eigen::Dynamic,Eigen::Dynamic> tmpTable(NumRows, NumCols);
 
-	omp_set_dynamic(1);
-	#pragma omp parallel private(tmpTable)// for //
-	{
-		//int nthreads, procs, maxt, inpar, dynamic, nested;
-
-		// Get environment information
-		/*procs = omp_get_num_procs();
-		nthreads = omp_get_num_threads();
-		maxt = omp_get_max_threads();
-		inpar = omp_in_parallel();
-		dynamic = omp_get_dynamic();
-		nested = omp_get_nested();
-
-		// Print environment information
-		printf("Number of processors = %d\n", procs);
-		printf("Number of threads = %d\n", nthreads);
-		printf("Max threads = %d\n", maxt);
-		printf("In parallel? = %d\n", inpar);
-		printf("Dynamic threads enabled? = %d\n", dynamic);
-		printf("Nested parallelism supported? = %d\n", nested);
-*/
-		#pragma omp for //shared(tmpTable)
-		for(int i=0; i<tmpTable.rows(); i++){
-			//cout << "The number of threads is " << omp_get_num_threads() << endl;
-			for (int j=0; j<tmpTable.cols(); j++){
-				tmpTable(i,j) = getNewState(i, j);
-			}
+	#pragma omp parallel for private(tmpTable)
+	for(int i=0; i<tmpTable.rows(); i++){
+		for (int j=0; j<tmpTable.cols(); j++){
+			tmpTable(i,j) = getNewState(i, j);
 		}
-
 	}
 	board = tmpTable;
 }
