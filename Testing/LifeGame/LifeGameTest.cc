@@ -1,26 +1,11 @@
-/*============================================================================
-
-  research-computing-with-cpp-demo: CMake based demo code.
-
-  Copyright (c) University College London (UCL). All rights reserved.
-
-  This software is distributed WITHOUT ANY WARRANTY; without even
-  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-  PURPOSE.
-
-  See LICENSE.txt in the top level directory for details.
-
-============================================================================*/
-
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include <catch.hpp>
-#include <string>
 
+#include <string>
+#include <catch.hpp>
 #include <LifeGame.hpp>
-#include <GeneralException.hpp>
-#include <IncorrectInitialStateException.hpp>
-#include <IncorrectSizesException.hpp>
 #include <NoFileFoundException.hpp>
+#include <IncorrectSizesException.hpp>
+#include <IncorrectInitialStateException.hpp>
 
 using namespace std;
 

@@ -12,9 +12,7 @@
 #
 #============================================================================*/
 
-add_executable(main main.cpp)
+add_executable(LifeGame main.cpp LifeGame.cpp)
 
-target_link_libraries(main ${ITK_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(LifeGame ${ITK_LIBRARIES} ${Boost_LIBRARIES})
 
-
-#add_subdirectory(Include)

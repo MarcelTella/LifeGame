@@ -12,6 +12,6 @@
 #
 #============================================================================*/
 
-add_executable(LifeGameTest LifeGameTest.cc)
+add_executable(LifeGameTest LifeGameTest.cc ${PROJECT_SOURCE_DIR}/Code/LifeGame/LifeGame.cpp)
 target_link_libraries(LifeGameTest ${ITK_LIBRARIES})
 

@@ -20,7 +20,7 @@
 #include <LifeGame.hpp>
 #include <sys/stat.h>
 #include <time.h>
-#include <stdio.h>
+#include <GeneralException.hpp>
 
 using namespace std;
 
@@ -70,38 +70,47 @@ int program_options (int argc, char** argv, string &path1, string &output_path, 
 
 int main(int argc, char** argv)
 {
-	//Timing
-	clock_t t;
-	int f;
-	t = clock();
-	printf ("Calculating...\n");
+	try {
+		//Timing
+		clock_t t;
+		int f;
+		t = clock();
 
-	//Get points
-	string input_path;
-	string output_path;
-	int iter;
+		//Get points
+		string input_path;
+		string output_path;
+		int iter;
 
-	if( !program_options(argc, argv, input_path, output_path, iter))
-		return 1;
+		//Command line parsing
+		if(!program_options(argc, argv, input_path, output_path, iter))
+			return 1;
 
-	if(iter < 0) throw GeneralException("Negative number of iterations");
+		//Controlling the number of iterations
+		if(iter < 0) throw GeneralException("Negative number of iterations");
 
-	//Checking the path is correct and it does not exist.
-	struct stat buffer;
-    if (stat (output_path.c_str(), &buffer) == 0) throw GeneralException("Output file already exists");
+		//Checking the path is correct and it does not exist.
+		struct stat buffer;
+		if(stat (output_path.c_str(), &buffer) == 0) throw GeneralException("Output file already exists");
 
-	//Initialise lg;
-	LifeGame lg(input_path);
+		//Initialise lg;
+		LifeGame lg(input_path);
 
-	//while(true){
-	lg.writeInFile(output_path);
-	for (int i=0;i<iter;i++){
-		lg.updateBoard();
+		// Updating the board iter iterations.
 		lg.writeInFile(output_path);
-	}
+		for (int i = 0;i < iter; i++){
+			lg.updateBoard();
+			lg.writeInFile(output_path);
+		}
 
-	t = clock() - t;
-	printf ("It took me %d clicks (%f seconds).\n",(int)t,((float)t)/CLOCKS_PER_SEC);
+		//Timing
+		t = clock() - t;
+		printf ("It took me %d clicks (%f seconds).\n",(int)t,((float)t)/CLOCKS_PER_SEC);
+
+    } catch(exception &e){
+    	cerr << "The program has failed due to the following exception:" << endl;
+    	cerr << " -- " << e.what() << endl;
+    	return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 }

@@ -4,10 +4,10 @@
 #include <iostream>
 #include <Eigen/Dense>
 
+
 using namespace std;
 
 enum state{dead, alive};
-
 
 class LifeGame
 {
@@ -28,5 +28,5 @@ class LifeGame
 	friend ostream& operator<< (ostream& os, const LifeGame& lg);
 };
 
-#include "../LifeGame.cc"
+
 #endif

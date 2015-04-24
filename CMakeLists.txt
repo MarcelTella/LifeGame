@@ -58,6 +58,7 @@ if (NOT ${CMAKE_VERSION} VERSION_LESS "3.1")
   cmake_policy(SET CMP0053 OLD)
 endif ()
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall  -fopenmp -O3")
 
 ######################################################################
 # We have a super-build option to download Eigen, Boost, ITK.
@@ -104,6 +105,7 @@ set(CMAKE_MODULE_PATH
    )
 
 
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -fopenmp -O3")
 ######################################################################
 # Add in any functions/macros.
 ######################################################################
@@ -203,6 +205,10 @@ add_subdirectory(Testing)
 # My Own directives
 ######################################################################
 link_directories(Code/LifeGame/Include)
-set ( CMAKE_C_FLAGS "fopenmp")
-set (CMAKE_EXE_LINKER_FLAGS "fopenmp" )
+
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
 
