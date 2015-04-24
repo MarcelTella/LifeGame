@@ -11,10 +11,20 @@ Build Instructions
 
 Tested on Linux (gcc).
 
-The script Utils/CompileAndRun.sh will execute everythig.
-Alternatively, the code can be compiled and run by using
+First of all, clone the repository
 ```
 git clone https://github.com/MarcelTella/LifeGame.git
+```
+
+The script Utils/Compile.sh followed by Utils/un.sh will execute the program.
+```
+cd Utils
+./Compile.sh
+./run.sh
+```
+
+Alternatively, the code can be compiled and run by using
+```
 mkdir research-computing-with-cpp-demo-build
 cd research-computing-with-cpp-demo-build
 ccmake ../research-computing-with-cpp-demo
