@@ -50,8 +50,7 @@ void LifeGame::loadFile(string path)
 	int rows = 0;
 	bool read;
 
-	for(int ii=0; ii<NumRows ; ii++){
-			
+	for (int ii = 0; ii < NumRows; ii++) {
 		getline(file, line);
 		if (line.size() == 0) throw IncorrectInitialStateException("Wrong Initial State - No data");
 
@@ -61,7 +60,6 @@ void LifeGame::loadFile(string path)
 		int iTemp;
 		int columns = 0;
 		for(int i=0; i<NumCols ; i++){
-
 			read = (iss >> temp);
 			if (!read) throw IncorrectInitialStateException("Wrong Initial State - Not enough data");
 
@@ -89,7 +87,7 @@ void LifeGame::updateBoard()
 {
 	Eigen::Matrix <bool,Eigen::Dynamic,Eigen::Dynamic> tmpTable(NumRows, NumCols);
 
-	#pragma omp parallel for private(tmpTable)
+	#pragma omp parallel for shared(tmpTable)
 	for(int i=0; i<tmpTable.rows(); i++){
 		for (int j=0; j<tmpTable.cols(); j++){
 			tmpTable(i,j) = getNewState(i, j);

@@ -20,6 +20,8 @@ parse_yaml() {
 # read yaml file
 eval $(parse_yaml config.yml "")
 cd $(echo $path)
-
+cd ..
+make
+cd -
 echo $(./LifeGame --in $(echo $input_file) --out $(echo $output_file) --iter $(echo $iter))
 

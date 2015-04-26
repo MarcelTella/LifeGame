@@ -6,6 +6,7 @@
 #include <NoFileFoundException.hpp>
 #include <IncorrectSizesException.hpp>
 #include <IncorrectInitialStateException.hpp>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -146,6 +147,88 @@ TEST_CASE( "Checking the count of neighbours", "[Life Game]" ) {
 	o.close();
 	lg.loadFile(correct_path);
 	REQUIRE( lg.countNeighbours(1,1,alive) == 1);
+
+	// Dead cells
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 0);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 1);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 2);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 3);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 1 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 4);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 5);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 1 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 6);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 7);
+
+	o.open (correct_path.c_str());
+	o << 3 << endl << 3 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  1 << ' ' << 0 << endl;
+	o << 0 << ' ' <<  0 << ' ' << 0 << endl;
+	o.close();
+	lg.loadFile(correct_path);
+	REQUIRE( lg.countNeighbours(1,1,dead) == 8);
 }
 
 TEST_CASE( "Test for the state of the cells", "[Life Game]" ) {
@@ -189,18 +272,4 @@ TEST_CASE( "Core conditions, getting a new state from a board and a position", "
 	REQUIRE( lg.getNewState(2,1) == false);
 	REQUIRE( lg.getNewState(2,2) == false);
 
-}
-
-TEST_CASE( "Output file already exist", "[IO]" ) {
-	string path = "/tmp/alreadyexists.lg";
-	ofstream o;
-	o.open (path.c_str());
-	o << 3 << endl << 3 << endl;
-	o << 1 << ' ' <<  0 << ' ' << 0 << endl;
-	o << 1 << ' ' <<  1 << ' ' << 0 << endl;
-	o << 1 << ' ' <<  0 << ' ' << 0 << endl;
-	o.close();
-	LifeGame lg(path);
-
-	REQUIRE_THROWS(lg.writeInFile(path));
 }
