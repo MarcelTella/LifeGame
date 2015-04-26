@@ -17,7 +17,7 @@ git clone https://github.com/MarcelTella/LifeGame.git
 
 The script Utils/Compile.sh followed by Utils/un.sh will execute the program.
 ```
-cd Utils
+cd LifeGame/Utils
 ./Compile.sh
 ./run.sh
 ```
