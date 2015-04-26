@@ -33,5 +33,5 @@ make
 And an example of execution would be
 ```
 cd RCCPP-build/bin
-export OMP_NUM_THREADS=8;time ./LifeGame --in ../../../Data/init4000.txt --out b.txt --iter 50
+export OMP_NUM_THREADS=8;time ./LifeGame --in ../../../Data/init1000.txt --out b.txt --iter 50
 ```
