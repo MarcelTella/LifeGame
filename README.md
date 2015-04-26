@@ -20,6 +20,7 @@ The script Utils/Compile.sh followed by Utils/un.sh will execute the program.
 cd LifeGame/Utils
 ./Compile.sh
 ./run.sh
+./runTests.sh
 ```
 ==================
 Alternatively, the code can be compiled and run by using
