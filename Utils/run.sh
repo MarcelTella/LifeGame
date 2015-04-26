@@ -23,5 +23,5 @@ cd $(echo $path)
 cd ..
 make
 cd -
-echo $(./LifeGame --in $(echo $input_file) --out $(echo $output_file) --iter $(echo $iter))
+echo $(export OMP_NUM_THREADS=$(echo $num_threads); ./LifeGame --in $(echo $input_file) --out $(echo $output_file) --iter $(echo $iter))
 
