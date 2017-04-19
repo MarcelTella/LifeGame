@@ -1,0 +1,5 @@
+path: ../research-computing-with-cpp-demo-build/RCCPP-build/bin/
+input_file: ../../../Data/init1000.txt
+output_file: output.txt
+iter: 50
+num_threads: 1

@@ -104,8 +104,6 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
    )
 
-
-
 ######################################################################
 # Add in any functions/macros.
 ######################################################################
@@ -190,21 +188,12 @@ endforeach()
 ######################################################################
 # Setup further include folders
 ######################################################################
-include_directories(Code/LifeGame)
-include_directories(Testing/catch)
-include_directories(Testing/LifeGame)
-include_directories(Code/LifeGame/Include)
- 
-######################################################################
-# Decide what subdirectories we are building, and go and build them.
-######################################################################
-add_subdirectory(Code)
-add_subdirectory(Testing)
+include_directories(libs/catch)
+include_directories(src/include)
 
 ######################################################################
-# My Own directives
+# Open MP
 ######################################################################
-link_directories(Code/LifeGame/Include)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
