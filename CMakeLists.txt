@@ -188,7 +188,8 @@ endforeach()
 ######################################################################
 # Setup further include folders
 ######################################################################
-include_directories(libs/catch)
+#include_directories(src)
+#include_directories(libs/catch)
 include_directories(src/include)
 
 ######################################################################

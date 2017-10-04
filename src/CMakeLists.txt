@@ -12,6 +12,9 @@
 #
 #============================================================================*/
 
+include_directories(include)
+include_directories(imp)
+
 add_executable(LifeGame main.cpp imp/LifeGame.cpp)
 
 target_link_libraries(LifeGame ${ITK_LIBRARIES} ${Boost_LIBRARIES})
