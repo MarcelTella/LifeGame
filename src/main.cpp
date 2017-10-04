@@ -17,10 +17,10 @@
 #include <eigen3/Eigen/Dense>
 #include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
-#include <LifeGame.hpp>
 #include <sys/stat.h>
 #include <time.h>
-#include <GeneralException.hpp>
+#include "LifeGame.hpp"
+#include "GeneralException.hpp"
 
 using namespace std;
 

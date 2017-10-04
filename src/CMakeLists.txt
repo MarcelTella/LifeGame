@@ -11,11 +11,18 @@
 #  See LICENSE.txt in the top level directory for details.
 #
 #============================================================================*/
+set(EXECUTABLE_OUTPUT_PATH "bin")
 
-include_directories(include)
-include_directories(imp)
+set(SOURCES
+    main.cpp
+    LifeGame.hpp
+    LifeGame.cpp
+    GeneralException.hpp
+    IncorrectInitialStateException.hpp
+    IncorrectSizesException.hpp
+    NoFileFoundException.hpp
+)
 
-add_executable(LifeGame main.cpp imp/LifeGame.cpp)
-
+add_executable(LifeGame ${SOURCES})
 target_link_libraries(LifeGame ${ITK_LIBRARIES} ${Boost_LIBRARIES})
 
