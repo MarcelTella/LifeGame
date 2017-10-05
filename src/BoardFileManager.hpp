@@ -1,7 +1,6 @@
 #ifndef BOARD_FILE_MANAGER_H
 #define BOARD_FILE_MANAGER_H
 
-#include <string>
 #include <fstream>
 #include "general.hpp"
 
@@ -11,7 +10,7 @@ class BoardFileManager
 {  
     public:
     static void loadFile(const string, Board&);
-    static void writeInFile(const string outputPath, const Board& b);
+    static void writeInFile(const string outputPath, const Board&);
     static ifstream openFileCorrectly(const string inputPath);
     static void establishBoardSizeFromHeaders(istream& file, Board& b);
     static int getSizeFromLine(std::string line);
@@ -21,7 +20,6 @@ class BoardFileManager
     static void readBoardFromFile(ifstream& file, Board& board);
     static void readBoardLineFromFile(const string, Board&, const int whichLine);
     static void validateDataInFile(const string line);
-
 };
 
 #endif

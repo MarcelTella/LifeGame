@@ -14,6 +14,8 @@
 SET(SOURCES
     ../src/LifeGame.hpp
     ../src/LifeGame.cpp
+    ../src/BoardFileManager.hpp
+    ../src/BoardFileManager.cpp
 
     catch.hpp
 

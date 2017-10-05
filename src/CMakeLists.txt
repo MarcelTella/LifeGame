@@ -14,16 +14,16 @@
 set(EXECUTABLE_OUTPUT_PATH "bin")
 
 set(SOURCES
-    BoardFileManager.hpp
-    BoardFileManager.cpp
+
     LifeGame.hpp
     LifeGame.cpp
     main.cpp
 
     GeneralException.hpp
     general.hpp
+    BoardFileManager.hpp
+    BoardFileManager.cpp
 )
 
 add_executable(LifeGame ${SOURCES})
 target_link_libraries(LifeGame ${ITK_LIBRARIES} ${Boost_LIBRARIES})
-

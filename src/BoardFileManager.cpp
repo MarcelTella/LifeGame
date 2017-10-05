@@ -3,6 +3,13 @@
 
 using namespace std;
 
+void BoardFileManager::writeInFile(const string outputPath, const Board& board){
+   /* ofstream myfile;
+    myfile.open(outputPath.c_str(), ios_base::app);
+    myfile << board << endl << endl;
+    myfile.close();*/
+}
+
 void BoardFileManager::loadFile(const string inputPath, Board& b){
     ifstream file = BoardFileManager::openFileCorrectly(inputPath);
     BoardFileManager::readBoardFromFile(file, b);
@@ -70,11 +77,4 @@ void BoardFileManager::establishBoardSizeFromHeaders(istream& file, Board& board
 int BoardFileManager::getSizeFromLine(string line){
     if (line.size() == 0) throw GeneralException("Incorrect Sizes");
     return atoi(line.c_str());
-}
-
-void BoardFileManager::writeInFile(string outputPath, const Board& board){
-    ofstream myfile;
-    myfile.open(outputPath.c_str(), std::ios_base::app);
-    myfile << board << endl << endl;
-    myfile.close();
 }

@@ -1,6 +1,6 @@
 #include <iostream>
-#include "BoardFileManager.hpp"
 #include "LifeGame.hpp"
+#include "BoardFileManager.hpp"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ LifeGame::LifeGame(){
 }
 
 LifeGame::LifeGame(string inputPath){
-    //BoardFileManager::loadFile(inputPath, _board);
+    BoardFileManager::loadFile(inputPath, _board);
 }
 
 void LifeGame::updateBoard(){
@@ -90,7 +90,7 @@ int LifeGame::getIndexWithinBoard(const int index, const dimension& d) const{
 }
 
 void LifeGame::writeInFile(const string outputPath) const{
-    //::writeInFile(outputPath, _board);
+    BoardFileManager::writeInFile(outputPath, _board);
 }
 
 ostream& operator << (ostream& os, const LifeGame& lg){
