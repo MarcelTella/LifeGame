@@ -83,6 +83,13 @@ mark_as_advanced(RCCPP_VERSION_MAJOR)
 mark_as_advanced(RCCPP_VERSION_MINOR)
 mark_as_advanced(RCCPP_VERSION_PATCH)
 
+project(LifeGame)
+
+#####################################################################
+# C++ 11
+
+#####################################################################
+SET(CMAKE_CXX_FLAGS "-std=c++0x")
 
 ######################################################################
 # Make sure Git is available.
@@ -130,10 +137,10 @@ mark_as_advanced(BUILD_SHARED_LIBS)
 # If we are NOT doing superbuild, then the next statement has no
 # effect, and the build goes on the same as before.
 ######################################################################
-if(BUILD_SUPERBUILD)
-  include("CMake/SuperBuild.cmake")
-  return()
-endif(BUILD_SUPERBUILD)
+#if(BUILD_SUPERBUILD)
+#  include("CMake/SuperBuild.cmake")
+#  return()
+#endif(BUILD_SUPERBUILD)
 
 
 ######################################################################
@@ -148,10 +155,9 @@ message("CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
 ######################################################################
 # Find Eigen.
 ######################################################################
-find_package(Eigen REQUIRED)
-include_directories(${Eigen_INCLUDE_DIR})
-message("Loading Eigen from ${Eigen_INCLUDE_DIR}")
-
+find_package (Eigen3)
+include_directories(${EIGEN3_INCLUDE_DIR})
+message(STATUS "EIGEN:  ${EIGEN3_VERSION}  (internal)")
 
 ######################################################################
 # Find Boost.
@@ -170,9 +176,9 @@ link_directories(${Boost_LIBRARY_DIRS})
 ######################################################################
 # Find ITK.
 ######################################################################
-find_package(ITK REQUIRED)
-include(${ITK_USE_FILE})
-message("Loading ITK from ${ITK_DIR}")
+#find_package(ITK REQUIRED)
+#include(${ITK_USE_FILE})
+#message("Loading ITK from ${ITK_DIR}")
 
 
 ######################################################################
@@ -188,9 +194,8 @@ endforeach()
 ######################################################################
 # Setup further include folders
 ######################################################################
-#include_directories(src)
-#include_directories(libs/catch)
-include_directories(src/include)
+add_subdirectory(src)
+add_subdirectory(test)
 
 ######################################################################
 # Open MP

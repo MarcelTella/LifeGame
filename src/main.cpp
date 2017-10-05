@@ -26,7 +26,8 @@ using namespace std;
 
 namespace po = boost::program_options;
 
-int program_options (int argc, char** argv, string &path1, string &output_path, int &iter)
+// Change case, ifs isolated each one in a function.
+int program_options(int argc, char** argv, string &path1, string &output_path, int &iter)
 {
 	po::options_description desc("Allowed options");
 
@@ -34,8 +35,7 @@ int program_options (int argc, char** argv, string &path1, string &output_path, 
 	    ("help", "produce help message")
 	    ("in", po::value<std::string> (), "Input file")
 	    ("out", po::value<std::string> (), "Output file")
-	    ("iter", po::value<std::string> (), "Number of Iterations")
-	;
+	    ("iter", po::value<std::string> (), "Number of Iterations");
 
 	po::variables_map vm;
 	po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -68,55 +68,35 @@ int program_options (int argc, char** argv, string &path1, string &output_path, 
 	return 1;
 }
 
-int main(int argc, char** argv)
-{
-	try {
-		//Timing
-		clock_t t;
-		int f;
-		t = clock();
+int main(int argc, char** argv){
+    //--
+    //Get points. Encapsulate into function that controls this.
+    string input_path;
+    string output_path;
+    int iter;
 
-		double startTime;
-		double endTime;
-		startTime = omp_get_wtime();
+    //Command line parsing
+    if(!program_options(argc, argv, input_path, output_path, iter))
+        return 1;
 
-		//Get points
-		string input_path;
-		string output_path;
-		int iter;
+    //Controlling the number of iterations
+    if(iter < 0) throw GeneralException("Negative number of iterations");
 
-		//Command line parsing
-		if(!program_options(argc, argv, input_path, output_path, iter))
-			return 1;
+    //Checking the path is correct and it does not exist.
+    struct stat buffer;
+    if(stat (output_path.c_str(), &buffer) == 0) throw GeneralException("Output file already exists");
+    // -- end/
 
-		//Controlling the number of iterations
-		if(iter < 0) throw GeneralException("Negative number of iterations");
 
-		//Checking the path is correct and it does not exist.
-		struct stat buffer;
-		if(stat (output_path.c_str(), &buffer) == 0) throw GeneralException("Output file already exists");
+    //Initialise lg;
+    LifeGame lg(input_path);
 
-		//Initialise lg;
-		LifeGame lg(input_path);
-
-		// Updating the board iter iterations.
-		lg.writeInFile(output_path);
-		for (int i = 0;i < iter; i++){
-			lg.updateBoard();
-			lg.writeInFile(output_path);
-		}
-
-		//Timing
-		t = clock() - t;
-		printf ("It took me %d clicks (%f seconds).\n",(int)t,((float)t)/CLOCKS_PER_SEC);
-
-		endTime = omp_get_wtime();
-		printf("This task took %f seconds\n", endTime - startTime);
-
-    } catch(exception &e){
-    	cerr << "The program has failed due to the following exception:" << endl;
-    	cerr << " -- " << e.what() << endl;
-    	return EXIT_FAILURE;
+    // Updating the board iter iterations. This can be further encapsulated.
+    // into
+    lg.writeInFile(output_path);
+    for (int i = 0;i < iter; i++){
+        lg.updateBoard();
+        lg.writeInFile(output_path);
     }
 
   return EXIT_SUCCESS;

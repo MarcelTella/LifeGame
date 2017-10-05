@@ -14,13 +14,14 @@
 set(EXECUTABLE_OUTPUT_PATH "bin")
 
 set(SOURCES
-    main.cpp
+    BoardFileManager.hpp
+    BoardFileManager.cpp
     LifeGame.hpp
     LifeGame.cpp
+    main.cpp
+
     GeneralException.hpp
-    IncorrectInitialStateException.hpp
-    IncorrectSizesException.hpp
-    NoFileFoundException.hpp
+    general.hpp
 )
 
 add_executable(LifeGame ${SOURCES})

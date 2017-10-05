@@ -11,7 +11,14 @@
 #  See LICENSE.txt in the top level directory for details.
 #
 #============================================================================*/
+SET(SOURCES
+    ../src/LifeGame.hpp
+    ../src/LifeGame.cpp
 
-add_executable(LifeGameTest LifeGameTest.cc ${PROJECT_SOURCE_DIR}/src/imp/LifeGame.cpp)
+    catch.hpp
+
+    LifeGameTest.cpp
+)
+add_executable(LifeGameTest ${SOURCES})
 target_link_libraries(LifeGameTest ${ITK_LIBRARIES})
 

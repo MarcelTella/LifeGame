@@ -1,180 +1,99 @@
 #include <iostream>
-#include <fstream>
-#include <omp.h>
-#include <GeneralException.hpp>
-#include <IncorrectInitialStateException.hpp>
-#include <IncorrectSizesException.hpp>
-#include <NoFileFoundException.hpp>
-#include <LifeGame.hpp>
+#include "BoardFileManager.hpp"
+#include "LifeGame.hpp"
 
 using namespace std;
 
-LifeGame::LifeGame()
-{
-	int defaultValue = 10;
-	NumRows = defaultValue;
-	NumCols = defaultValue;
-	board.resize(NumRows, NumCols);
+LifeGame::LifeGame(){
+    int defaultValue = 10;
+    _nRows = defaultValue;
+    _nCols = defaultValue;
+    _board.resize(_nRows, _nCols);
 }
 
-LifeGame::LifeGame(string input_path)
-{
-	loadFile(input_path);
+LifeGame::LifeGame(string inputPath){
+    //BoardFileManager::loadFile(inputPath, _board);
 }
 
-void LifeGame::loadFile(string path)
-{
-	//Open the file
-	ifstream file(path.c_str());
+void LifeGame::updateBoard(){
+    Board tmpTable(_nRows, _nCols);
 
-	//Making sure that I can read.
-	if(!file.is_open()) throw NoFileFoundException("No File Found");
+    for(int i=0; i<tmpTable.rows(); i++){
+        for (int j=0; j < tmpTable.cols(); j++){
+            tmpTable(i, j) = getNewState(i, j);
+        }
+    }
 
-	string line;
-	//Read the cols
-	getline(file, line);
-
-	//Assign the cols
-	NumRows = atoi(line.c_str());
-
-
-	if (line.size() == 0) throw IncorrectSizesException("Incorrect Sizes");
-	getline(file, line);
-
-	//Assign the rows
-	NumCols = atoi(line.c_str());
-
-	//Create the matrix
-	board.resize(NumRows, NumCols);
-
-	int rows = 0;
-	bool read;
-
-	for (int ii = 0; ii < NumRows; ii++) {
-		getline(file, line);
-		if (line.size() == 0) throw IncorrectInitialStateException("Wrong Initial State - No data");
-
-		//filling the object
-		istringstream iss(line);
-		string temp;
-		int iTemp;
-		int columns = 0;
-		for(int i=0; i<NumCols ; i++){
-			read = (iss >> temp);
-			if (!read) throw IncorrectInitialStateException("Wrong Initial State - Not enough data");
-
-			iTemp = atoi(temp.c_str());
-			if (iTemp != 1 && iTemp != 0) throw IncorrectInitialStateException("Wrong Initial State - Value not allowed");
-			board(ii, i) = (iTemp == 1);
-			columns++;
-		}
-		if (columns != NumCols)throw IncorrectInitialStateException("Wrong Initial State - Error in the number of cols.");
-		rows++;
-	}
-	if (rows != NumRows)throw IncorrectInitialStateException("Wrong Initial State - Error in the number of rows");
+    _board = tmpTable;
 }
 
-
-void LifeGame::writeInFile(string output_path)
-{
-	  ofstream myfile;
-	  myfile.open(output_path.c_str(), std::ios_base::app);
-	  myfile << board << endl << endl;
-	  myfile.close();
+int LifeGame::countNeighbours(const int i, const int j, const state& st) const{
+    int count = 0;
+    if(stateOf(i-1, j) == st) count++; //Up
+    if(stateOf(i+1, j) == st) count++; //Down
+    if(stateOf(i, j-1) == st) count++; //Left
+    if(stateOf(i, j+1) == st) count++; //Right
+    if(stateOf(i-1, j-1) == st) count++; //Diagonal top left
+    if(stateOf(i-1, j+1) == st) count++; //Diagonal top right
+    if(stateOf(i+1, j+1) == st) count++; // Diagonal bottom right
+    if(stateOf(i+1, j-1) == st) count++; //Diagonal bottom left
+    return count;
 }
 
-void LifeGame::updateBoard()
-{
-	Eigen::Matrix <bool,Eigen::Dynamic,Eigen::Dynamic> tmpTable(NumRows, NumCols);
-
-	#pragma omp parallel for shared(tmpTable)
-	for(int i=0; i<tmpTable.rows(); i++){
-		for (int j=0; j<tmpTable.cols(); j++){
-			tmpTable(i,j) = getNewState(i, j);
-		}
-	}
-	board = tmpTable;
+int LifeGame::countNeighboursAlive(const int i, const int j) const{
+    return countNeighbours(i, j, alive);
 }
 
-
-int LifeGame::countNeighbours(int i, int j, state st) const
-{
-	int count = 0;
-	//8 cases
-	//Up
-	if( stateOf(i-1,j) == st){
-		count++;
-	}
-	//Down
-	if( stateOf(i+1,j) == st){
-		count++;
-	}
-	//Left
-	if( stateOf(i,j-1) == st){
-		count++;
-	}
-	//Right
-	if( stateOf(i,j+1) == st){
-		count++;
-	}
-	//Diagonal top left
-	if( stateOf(i-1,j-1) == st){
-		count++;
-	}
-	//Diagonal top right
-	if( stateOf(i-1,j+1) == st){
-		count++;
-	}
-	//Diagonal bottom right
-	if( stateOf(i+1,j+1) == st){
-		count++;
-	}
-	//Diagonal bottom left
-	if( stateOf(i+1,j-1) == st){
-		count++;
-	}
-	return count;
+int LifeGame::countNeighboursDead(const int i, const int j) const{
+    return countNeighbours(i, j, dead);
 }
 
+bool LifeGame::getNewState(int i, int j) const {
+    int neighAlive = countNeighboursAlive(i, j);
+    state thisState = stateOf(i, j);
 
-bool LifeGame::getNewState(int i, int j) const
-{
-	int aNeigh = countNeighbours(i, j, alive);
-	if (aNeigh == 3 && stateOf(i,j) == dead){
-		return alive;
-	}
-	else if(stateOf(i,j) == alive && (aNeigh == 2 || aNeigh == 3) ){
-		return alive;
-	}
+    if (deadButThreeNeighboursAlive(thisState, neighAlive) ||
+            aliveAndTwoOrThreeNeighboursAlive(thisState, neighAlive)){
+        return alive;
+    }
 
-	return dead;
+    return dead;
 }
 
-
-bool LifeGame::stateOf(int i, int j) const
-{
-	int newI, newJ;
-	if(i<0){
-		newI = (NumRows-(abs(i)%NumRows) ) % NumRows;
-	}
-	else{
-		newI = i%NumRows;
-	}
-
-	if(j<0){
-		newJ = (NumCols-(abs(j)%NumCols)) % NumCols;
-	}
-	else{
-		newJ = j%NumCols;
-	}
-
-	return board(newI,newJ);
+bool LifeGame::deadButThreeNeighboursAlive(const state& st, const int neighboursAlive) const{
+    return (neighboursAlive == 3) && (st == dead);
 }
 
+bool LifeGame::aliveAndTwoOrThreeNeighboursAlive(const state& st, const int neighboursAlive) const{
+    return (st == alive) && (neighboursAlive == 2 || neighboursAlive == 3);
+}
 
-ostream& operator<<(ostream& os, const LifeGame& lg)
-{
-	cout << lg.board << endl;
+state LifeGame::stateOf(const int i, const int j) const{
+    int newI = getIndexWithinBoard(i, rows);
+    int newJ = getIndexWithinBoard(j, cols);
+
+    if (_board(newI, newJ)) return alive;
+    else return dead;
+}
+
+int LifeGame::getIndexWithinBoard(const int index, const dimension& d) const{
+    int nCells;
+    if (d == cols)
+        nCells = _nCols;
+    else
+        nCells = _nRows;
+
+    if(index < 0)
+        return (nCells - (abs(index) % nCells)) % nCells;
+    else
+        return index % nCells;
+}
+
+void LifeGame::writeInFile(const string outputPath) const{
+    //::writeInFile(outputPath, _board);
+}
+
+ostream& operator << (ostream& os, const LifeGame& lg){
+    cout << lg._board << endl;
     return os;
 }
-
