@@ -1,13 +1,14 @@
 #include "BoardFileManager.hpp"
 #include "GeneralException.hpp"
+#include <iostream>
 
 using namespace std;
 
 void BoardFileManager::writeInFile(const string outputPath, const Board& board){
-   /* ofstream myfile;
+    ofstream myfile;
     myfile.open(outputPath.c_str(), ios_base::app);
     myfile << board << endl << endl;
-    myfile.close();*/
+    myfile.close();
 }
 
 void BoardFileManager::loadFile(const string inputPath, Board& b){
@@ -71,6 +72,7 @@ void BoardFileManager::establishBoardSizeFromHeaders(istream& file, Board& board
     getline(file, line);
     int nCols = BoardFileManager::getSizeFromLine(line);
 
+    cout << "Rows and cols: " << nRows << ' ' << nCols << endl;
     board.resize(nRows, nCols);
 }
 

@@ -10,11 +10,9 @@ using namespace std;
 
 class LifeGame
 {
-	private:
+    protected:
         Board _board;
-        int _nRows;
-        int _nCols;
-
+	private:  
         int getIndexWithinBoard(const int, const dimension&) const;
         int countNeighbours(const int, const int, const state&) const;
         bool aliveAndTwoOrThreeNeighboursAlive(const state&, const int neighAlive) const;
@@ -22,14 +20,17 @@ class LifeGame
 	public:
 		LifeGame();
         LifeGame(string path);
+        void writeInFile(const string outputPath) const;
+        friend ostream& operator<< (ostream&, const LifeGame&);
 
         void updateBoard();
         bool getNewState(const int i, const int j) const;
         int countNeighboursAlive(const int, const int) const;
         int countNeighboursDead(const int, const int) const;
         state stateOf(const int i, const int j) const;
-        void writeInFile(const string outputPath) const;
-        friend ostream& operator<< (ostream&, const LifeGame&);
+
+        int getCols() const;
+        int getRows() const;
 };
 
 #endif

@@ -14,6 +14,8 @@
 SET(SOURCES
     ../src/LifeGame.hpp
     ../src/LifeGame.cpp
+    ../src/LifeGameTestClass.hpp
+    ../src/LifeGameTestClass.cpp
     ../src/BoardFileManager.hpp
     ../src/BoardFileManager.cpp
 
@@ -23,4 +25,3 @@ SET(SOURCES
 )
 add_executable(LifeGameTest ${SOURCES})
 target_link_libraries(LifeGameTest ${ITK_LIBRARIES})
-

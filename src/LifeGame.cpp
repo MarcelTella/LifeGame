@@ -6,9 +6,7 @@ using namespace std;
 
 LifeGame::LifeGame(){
     int defaultValue = 10;
-    _nRows = defaultValue;
-    _nCols = defaultValue;
-    _board.resize(_nRows, _nCols);
+    _board.resize(defaultValue, defaultValue);
 }
 
 LifeGame::LifeGame(string inputPath){
@@ -16,7 +14,7 @@ LifeGame::LifeGame(string inputPath){
 }
 
 void LifeGame::updateBoard(){
-    Board tmpTable(_nRows, _nCols);
+    Board tmpTable(getRows(), getCols());
 
     for(int i=0; i<tmpTable.rows(); i++){
         for (int j=0; j < tmpTable.cols(); j++){
@@ -29,14 +27,16 @@ void LifeGame::updateBoard(){
 
 int LifeGame::countNeighbours(const int i, const int j, const state& st) const{
     int count = 0;
-    if(stateOf(i-1, j) == st) count++; //Up
-    if(stateOf(i+1, j) == st) count++; //Down
-    if(stateOf(i, j-1) == st) count++; //Left
-    if(stateOf(i, j+1) == st) count++; //Right
+
+    if(stateOf(i-1, j) == st) count++;   //Up
+    if(stateOf(i+1, j) == st) count++;   //Down
+    if(stateOf(i, j-1) == st) count++;   //Left
+    if(stateOf(i, j+1) == st) count++;   //Right
     if(stateOf(i-1, j-1) == st) count++; //Diagonal top left
     if(stateOf(i-1, j+1) == st) count++; //Diagonal top right
-    if(stateOf(i+1, j+1) == st) count++; // Diagonal bottom right
+    if(stateOf(i+1, j+1) == st) count++; //Diagonal bottom right
     if(stateOf(i+1, j-1) == st) count++; //Diagonal bottom left
+
     return count;
 }
 
@@ -79,9 +79,9 @@ state LifeGame::stateOf(const int i, const int j) const{
 int LifeGame::getIndexWithinBoard(const int index, const dimension& d) const{
     int nCells;
     if (d == cols)
-        nCells = _nCols;
+        nCells = getCols();
     else
-        nCells = _nRows;
+        nCells = getRows();
 
     if(index < 0)
         return (nCells - (abs(index) % nCells)) % nCells;
@@ -96,4 +96,12 @@ void LifeGame::writeInFile(const string outputPath) const{
 ostream& operator << (ostream& os, const LifeGame& lg){
     cout << lg._board << endl;
     return os;
+}
+
+int LifeGame::getCols() const{
+    return _board.cols();
+}
+
+int LifeGame::getRows() const{
+    return _board.rows();
 }
