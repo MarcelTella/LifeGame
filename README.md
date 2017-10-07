@@ -1,38 +1,30 @@
 # Game of Life - Project details
-This project is the second coursework of the subject Research Computing with C++
+This project is the second coursework of the subject Research Computing with C++. Created in 2014-2015, refactored in October 2017
 
 # Author
 Marcel Tella Amo
 
-
 Build Instructions
 ==================
 
-Tested on Linux (gcc).
+Tested on Ubuntu 16.04 (gcc).
 
 First of all, clone the repository
 ```
 git clone https://github.com/MarcelTella/LifeGame.git
 ```
 
-The script Utils/Compile.sh followed by Utils/un.sh will execute the program.
+The script utils/compile.sh will compile and run the program as well as the unit testing suite.
 ```
-cd LifeGame/Utils
-./Compile.sh
-./run.sh
-./runTests.sh
+cd LifeGame/utils
+./compile.sh
 ```
-==================
-Alternatively, the code can be compiled and run by using
-```
-mkdir research-computing-with-cpp-demo-build
-cd research-computing-with-cpp-demo-build
-ccmake ../research-computing-with-cpp-demo
-make
+Make sure the paths to the data in ./compile.sh are pointing to the right files.
 
+This will produce an output.txt in the location specified in compile.sh. Then, the output can be easily converted into a video using the MATLAB script utils/videoscript.m
 ```
-And an example of execution would be
-```
-cd RCCPP-build/bin
-export OMP_NUM_THREADS=8;time ./LifeGame --in ../../../Data/init1000.txt --out b.txt --iter 50
+nRows = 100;
+nCols = 100;
+lifeGameOutputFilePath = 'PathToTheOutputFile.txt'
+videoscript(lifeGameOutputFilePath, nRows, nCols);
 ```
