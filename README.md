@@ -5,8 +5,7 @@ This project is the second coursework of the subject Research Computing with C++
 **Author:** Marcel Tella Amo
 
 ![ConwaysGameOfLife](https://upload.wikimedia.org/wikipedia/commons/e/e5/Gospers_glider_gun.gif)
-![ConwaysGameOfLife](https://upload.wikimedia.org/wikipedia/commons/0/07/Game_of_life_pulsar.gif)
-![ConwaysGameOfLife](https://upload.wikimedia.org/wikipedia/commons/f/fb/I-Column.gif)
+![ConwaysGameOfLife](https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Game_of_life_glider_gun.svg/610px-Game_of_life_glider_gun.svg.png)
 
 Build Instructions
 ==================
