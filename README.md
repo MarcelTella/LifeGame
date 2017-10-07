@@ -1,4 +1,4 @@
-![Logo](http://francky.me/images/quora001.png)
+![ConwaysGameOfLife](https://upload.wikimedia.org/wikipedia/commons/e/e5/Gospers_glider_gun.gif
 # Game of Life - Project details
 This project is the second coursework of the subject Research Computing with C++. Created in 2014-2015, refactored in October 2017
 
