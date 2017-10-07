@@ -1,3 +1,4 @@
+![Logo](http://francky.me/images/quora001.png)
 # Game of Life - Project details
 This project is the second coursework of the subject Research Computing with C++. Created in 2014-2015, refactored in October 2017
 
