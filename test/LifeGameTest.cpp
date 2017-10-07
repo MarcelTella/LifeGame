@@ -132,42 +132,51 @@ TEST_CASE( "Input file bad formatting", "[IO]" ) {
     REQUIRE_THROWS_AS(throwExceptionBecauseNoSizesInFile(), GeneralException);
 }
 
-LifeGame readFileSuccessfully(){
-    string inputPath = "../data/data.lg";
-    Lifegame lg(inputPath);
+LifeGameTestClass readFileSuccessfully(){
+    string inputPath = TEST_DATA_PATH + "data.lg";
+    LifeGameTestClass lg(inputPath);
     return lg;
 }
 
 TEST_CASE("Input file read correctly", "[IO]"){
-
     REQUIRE_NOTHROW(readFileSuccessfully());
-    LifeGameTest lg = readFileSuccessfully();
+    LifeGameTestClass lg = readFileSuccessfully();
+
+    Eigen::Matrix<bool, 5, 5> bShouldBe;
+    bShouldBe << dead,  alive, dead,  dead, dead,
+         alive,  alive, alive, dead,  dead,
+         dead,   alive, dead,  dead,  alive,
+         alive,  dead,  dead,  dead,  dead,
+         dead,   dead,  alive, dead,  dead;
+    Board b = lg.getBoard();
+    REQUIRE(b.isApprox(bShouldBe));
 }
 
+TEST_CASE("Incorrect initial estimate", "[IO]"){
+    string correctPath = "/tmp/correct_path.lg";
+    ofstream o;
+    o.open(correctPath.c_str());
 
+    o << 3 << endl << 3 << endl;
 
-//SECTION("Incorrect initial estimate"){
+    o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+    o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+    o << 1 << ' ' <<  1 << ' ' << 1 << endl;
+    o.close();
+    REQUIRE_NOTHROW(LifeGame lg(correctPath));
+}
 
-//	string correct_path = "/tmp/correct_path.lg";
-//	ofstream o;
-//	o.open (correct_path.c_str());
-//	o << 3 << endl << 3 << endl;
-//	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
-//	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
-//	o << 1 << ' ' <<  1 << ' ' << 1 << endl;
-//	o.close();
-//	REQUIRE_NOTHROW(LifeGame lg(correct_path) );
-//}
+TEST_CASE("Incorrect size of the initial estimate", "[IO]"){
+    string incorrectIe = "/tmp/correct_path.lg";
+    ofstream o;
+    o.open (incorrectIe.c_str());
 
-//    SECTION("Incorrect size of the initial estimate"){
-//			string incorrect_ie = "/tmp/correct_path.lg";
-//			ofstream o;
-//			o.open (incorrect_ie.c_str());
-//			o << 3 << endl << 3 << endl;
-//			o << 1  << ' ' << 1 << endl;
-//			o << 1  << ' ' << 1 << endl;
-//			o << 1  << ' ' << 1 << endl;
+    o << 3 << endl << 3 << endl;
 
-//			REQUIRE_THROWS_AS(LifeGame lg(incorrect_ie) , IncorrectInitialStateException );
-//	}
-//}
+    o << 1  << ' ' << 1 << endl;
+    o << 1  << ' ' << 1 << endl;
+    o << 1  << ' ' << 1 << endl;
+    o.close();
+
+    REQUIRE_THROWS_AS(LifeGame lg(incorrectIe), GeneralException);
+}

@@ -29,14 +29,14 @@ void BoardFileManager::readBoardLineFromFile(const string line, Board& board, co
 }
 
 void BoardFileManager::readBoardFromFile(ifstream& file, Board& board){
+    establishBoardSizeFromHeaders(file, board);
+
     int nRows = board.rows();
+
     string line;
-
-    getline(file, line);
-
-    BoardFileManager::validateDataInFile(line);
-
     for (int i=0; i<nRows; i++){
+        getline(file, line);
+        BoardFileManager::validateDataInFile(line);
         BoardFileManager::readBoardLineFromFile(line, board, i);
     }
 }
@@ -49,6 +49,8 @@ bool BoardFileManager::readValueFromLine(istringstream& iss){
 string BoardFileManager::tryToRead(istringstream& iss){
     string temp;
     if (!(iss >> temp)) throw GeneralException("Not enough data");
+
+    return temp;
 }
 
 bool BoardFileManager::tryToMakeSenseOfTheDatum(const string datumRead){
@@ -72,7 +74,6 @@ void BoardFileManager::establishBoardSizeFromHeaders(istream& file, Board& board
     getline(file, line);
     int nCols = BoardFileManager::getSizeFromLine(line);
 
-    cout << "Rows and cols: " << nRows << ' ' << nCols << endl;
     board.resize(nRows, nCols);
 }
 
