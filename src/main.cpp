@@ -20,12 +20,12 @@
 int main(int argc, char** argv){
     int iterations;
     string inputPath, outputPath;
-    if(!programOptions(argc, argv, inputPath, outputPath, iterations))
+    if(programOptions(argc, argv, inputPath, outputPath, iterations) == EXIT_FAILURE)
         return EXIT_FAILURE;
 
     LifeGame lifegame(inputPath);
     lifegame.writeInFile(outputPath);
-    for (int i = 0; i<iterations; i++){
+    for (int i = 0; i < (iterations-1); i++){
         lifegame.updateBoard();
         lifegame.writeInFile(outputPath);
     }

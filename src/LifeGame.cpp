@@ -18,39 +18,41 @@ void LifeGame::updateBoard(){
 
     for(int i=0; i<tmpTable.rows(); i++){
         for (int j=0; j < tmpTable.cols(); j++){
-            tmpTable(i, j) = getNewState(i, j);
+            tmpTable(i, j) = getNewState(Position(i, j));
         }
     }
 
     _board = tmpTable;
 }
 
-int LifeGame::countNeighbours(const int i, const int j, const state& st) const{
+int LifeGame::countNeighbours(const Position pos, const state& st) const{
     int count = 0;
+    int i = pos.row;
+    int j = pos.col;
 
-    if(stateOf(i-1, j) == st) count++;   //Up
-    if(stateOf(i+1, j) == st) count++;   //Down
-    if(stateOf(i, j-1) == st) count++;   //Left
-    if(stateOf(i, j+1) == st) count++;   //Right
-    if(stateOf(i-1, j-1) == st) count++; //Diagonal top left
-    if(stateOf(i-1, j+1) == st) count++; //Diagonal top right
-    if(stateOf(i+1, j+1) == st) count++; //Diagonal bottom right
-    if(stateOf(i+1, j-1) == st) count++; //Diagonal bottom left
+    if(stateOf(Position(i-1, j)) == st) count++;   //Up
+    if(stateOf(Position(i+1, j)) == st) count++;   //Down
+    if(stateOf(Position(i, j-1)) == st) count++;   //Left
+    if(stateOf(Position(i, j+1)) == st) count++;   //Right
+    if(stateOf(Position(i-1, j-1)) == st) count++; //Diagonal top left
+    if(stateOf(Position(i-1, j+1)) == st) count++; //Diagonal top right
+    if(stateOf(Position(i+1, j+1)) == st) count++; //Diagonal bottom right
+    if(stateOf(Position(i+1, j-1)) == st) count++; //Diagonal bottom left
 
     return count;
 }
 
-int LifeGame::countNeighboursAlive(const int i, const int j) const{
-    return countNeighbours(i, j, alive);
+int LifeGame::countNeighboursAlive(const Position pos) const{
+    return countNeighbours(pos, alive);
 }
 
-int LifeGame::countNeighboursDead(const int i, const int j) const{
-    return countNeighbours(i, j, dead);
+int LifeGame::countNeighboursDead(const Position pos) const{
+    return countNeighbours(pos, dead);
 }
 
-bool LifeGame::getNewState(int i, int j) const {
-    int neighAlive = countNeighboursAlive(i, j);
-    state thisState = stateOf(i, j);
+bool LifeGame::getNewState(const Position pos) const {
+    int neighAlive = countNeighboursAlive(pos);
+    state thisState = stateOf(pos);
 
     if (deadButThreeNeighboursAlive(thisState, neighAlive) ||
             aliveAndTwoOrThreeNeighboursAlive(thisState, neighAlive)){
@@ -68,9 +70,9 @@ bool LifeGame::aliveAndTwoOrThreeNeighboursAlive(const state& st, const int neig
     return (st == alive) && (neighboursAlive == 2 || neighboursAlive == 3);
 }
 
-state LifeGame::stateOf(const int i, const int j) const{
-    int newI = getIndexWithinBoard(i, rows);
-    int newJ = getIndexWithinBoard(j, cols);
+state LifeGame::stateOf(const Position pos) const{
+    int newI = getIndexWithinBoard(pos.row, rows);
+    int newJ = getIndexWithinBoard(pos.col, cols);
 
     if (_board(newI, newJ)) return alive;
     else return dead;

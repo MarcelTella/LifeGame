@@ -13,7 +13,7 @@ namespace po = boost::program_options;
 CLVariables generateHelpMessage(int argc, char** argv){
     po::options_description desc("Allowed options");
     desc.add_options()
-            ("help", "produce help message")
+            ("help", "Produces help message")
             ("in", po::value<std::string> (), "Input file")
             ("out", po::value<std::string> (), "Output file")
             ("iter", po::value<std::string> (), "Number of Iterations");
@@ -42,15 +42,18 @@ void captureInputParameters(const CLVariables& clVars, string& inputPath,
     }
 }
 
-int validateNIterations(const int nIters){
-    if(nIters < 0) return EXIT_FAILURE;
+int validateNIterations(const int nIters, const CLVariables& clVars){
+    if(nIters < 0){
+        showHelp(clVars);
+        return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
 
 int validateExactNumOfParameters(const CLVariables& clVars, const int argc){
     if (argc != 7 || ( !clVars.vm.count("in")  || !clVars.vm.count("out")
                        || !clVars.vm.count("iter") ) ) {
-        cout << clVars.desc << "\n";
+        showHelp(clVars);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
@@ -58,32 +61,32 @@ int validateExactNumOfParameters(const CLVariables& clVars, const int argc){
 
 int isTheUserAskingForHelp(const CLVariables& clVars){
     if(clVars.vm.count("help")){
-        cout << clVars.desc << "\n";
+        showHelp(clVars);
         return EXIT_FAILURE;
     }
+
     return EXIT_SUCCESS;
 }
 
-void validateOutputFileDoesNotExist(const string outputPath){
+int validateFileExists(const string path){
     struct stat buffer;
-    if(stat(outputPath.c_str(), &buffer) == 0)
-        throw GeneralException("Output file already exists");
-
+    if(stat(path.c_str(), &buffer) == 0)
+        return EXIT_SUCCESS;
+    return EXIT_FAILURE;
 }
 
 int programOptions(int argc, char** argv, string& inputPath,
                         string& outputPath, int& iterations){
     CLVariables clVars = generateHelpMessage(argc, argv);
-
-    int result = isTheUserAskingForHelp(clVars);
-    if (result == EXIT_FAILURE) return EXIT_FAILURE;
-
-    int resultNumParameters = validateExactNumOfParameters(clVars, argc);
-    if (resultNumParameters == EXIT_FAILURE) return EXIT_FAILURE;
+    if (isTheUserAskingForHelp(clVars) == EXIT_FAILURE) return EXIT_FAILURE;
+    if (validateExactNumOfParameters(clVars, argc) == EXIT_FAILURE) return EXIT_FAILURE;
 
     captureInputParameters(clVars, inputPath, outputPath, iterations);
-    int nIterValResult = validateNIterations(iterations);
-    if (nIterValResult == EXIT_FAILURE) return EXIT_FAILURE;
+    if (validateNIterations(iterations, clVars) == EXIT_FAILURE) return EXIT_FAILURE;
 
     return EXIT_SUCCESS;
+}
+
+void showHelp(const CLVariables& clVars){
+    cout << clVars.desc << "\n";
 }

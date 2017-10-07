@@ -16,8 +16,7 @@ set(EXECUTABLE_OUTPUT_PATH "bin")
 set(SOURCES
     LifeGame.hpp
     LifeGame.cpp
-    LifeGameTestClass.cpp
-    LifeGameTestClass.hpp
+    Position.hpp
     main.cpp
 
     GeneralException.hpp
